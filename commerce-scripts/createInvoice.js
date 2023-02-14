@@ -1,15 +1,15 @@
 //creating a charge
 
-require("dotenv").config();
-const axios = require("axios");
+require('dotenv').config();
+const axios = require('axios');
 const baseURL = process.env.BASE_URL;
-const url = baseURL + "/invoices/";
+const url = baseURL + '/invoices/';
 
 //Edit these fields
-let customerName = "";
-let businessName = "";
-let pricingType = "fixed_price"; //or no_price (donation)
-let customerEmail = "";
+let customerName = '';
+let businessName = '';
+let pricingType = 'fixed_price'; //or no_price (donation)
+let customerEmail = '';
 
 const invoiceDetails = JSON.stringify({
   business_name: businessName,
@@ -18,19 +18,19 @@ const invoiceDetails = JSON.stringify({
   pricing_type: pricingType, //no_price
   local_price: {
     amount: 3,
-    currency: "USD",
+    currency: 'USD',
   },
 });
 
 let config = {
-  method: "POST",
+  method: 'POST',
   url: url,
-  mode: "cors",
+  mode: 'cors',
   headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    "X-CC-API-KEY": process.env.API_KEY,
-    "X-CC-Version": process.env.API_VERSION,
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    'X-CC-API-KEY': process.env.API_KEY,
+    'X-CC-Version': process.env.API_VERSION,
   },
   data: invoiceDetails,
 };

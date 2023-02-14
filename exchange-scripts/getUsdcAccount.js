@@ -1,30 +1,28 @@
 const crypto = require('crypto');
-const CB_ACCESS_TIMESTAMP = Date.now() / 1000; // in ms
+const CB_ACCESS_TIMESTAMP = Date.now() / 1000;
 const CB_ACCESS_PASSPHRASE = process.env.CB_ACCESS_PASSPHRASE;
 const CB_ACCESS_KEY = process.env.CB_ACCESS_KEY;
 const secret = process.env.CB_SECRET;
-const profileID = process.env.EXCHANGE_PROFILE_ID;
 const baseURL = process.env.BASE_URL;
-const requestPath = '/withdrawals/crypto/';
-const method = 'POST';
+
+const requestPath = '/accounts';
+const method = 'GET';
 const url = baseURL + requestPath;
-
-let userCurrency = 'USDC';
-let userWithdrawlAddress = '0xb6d00d83158fee6695c72ff9c5e915478a479224';
-let userWithdrawalAmount = 5;
-const data = JSON.stringify({
-  profile_id: profileID,
-  amount: userWithdrawalAmount, //units of currency to be withdrawn ex: "3",
-  crypto_address: userWithdrawlAddress, //example: "",
-  currency: userCurrency, // exampple: "USDC",
-});
-
-const message = CB_ACCESS_TIMESTAMP + method + requestPath + data;
+const message = CB_ACCESS_TIMESTAMP + method + requestPath;
 const key = Buffer.from(secret, 'base64');
 const hmac = crypto.createHmac('sha256', key);
 const CB_ACCESS_SIGN = hmac.update(message).digest('base64');
 
-async function withdrawToCryptoAddress() {
+function findAccountIDByName(str, arr) {
+  let currency = str.toUpperCase();
+  arr.forEach((account) => {
+    if (account.currency == currency) {
+      console.log(account.id);
+    }
+  });
+}
+
+async function getUsdcAccount() {
   try {
     const response = await fetch(url, {
       method: method,
@@ -36,13 +34,12 @@ async function withdrawToCryptoAddress() {
         'CB-ACCESS-TIMESTAMP': CB_ACCESS_TIMESTAMP,
         'CB-ACCESS-PASSPHRASE': CB_ACCESS_PASSPHRASE,
       },
-      body: data,
     });
-    const conf = await response.json();
-    console.log(conf);
+    const data = await response.json();
+    let accounts = new Array(...data);
+    findAccountIDByName('usdc', accounts);
   } catch (error) {
     console.log(error);
   }
 }
-
-withdrawToCryptoAddress();
+getUsdcAccount();

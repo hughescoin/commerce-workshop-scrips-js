@@ -1,4 +1,3 @@
-require("dotenv").config();
 const chargeCode = process.env.CHARGE_CODE;
 const baseURL = process.env.BASE_URL;
 const url = baseURL + `/charges/${chargeCode}/resolve/`;
@@ -6,14 +5,14 @@ const url = baseURL + `/charges/${chargeCode}/resolve/`;
 async function resolveCharge() {
   try {
     const response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       url: url,
-      mode: "cors",
+      mode: 'cors',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-CC-API-KEY": process.env.API_KEY,
-        "X-CC-Version": process.env.API_VERSION,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CC-API-KEY': process.env.API_KEY,
+        'X-CC-Version': process.env.API_VERSION,
       },
     });
     const data = await response.json();
