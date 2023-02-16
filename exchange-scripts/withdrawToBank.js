@@ -1,7 +1,7 @@
 const crypto = require('crypto');
-const CB_ACCESS_TIMESTAMP = Date.now() / 1000; // in ms
-const CB_ACCESS_PASSPHRASE = process.env.CB_ACCESS_PASSPHRASE;
-const CB_ACCESS_KEY = process.env.CB_ACCESS_KEY;
+const timestamp = Date.now() / 1000; // in ms
+const passphrase = process.env.CB_ACCESS_PASSPHRASE;
+const accessKey = process.env.CB_ACCESS_KEY;
 const secret = process.env.CB_SECRET; //Exchange API Secret
 const profileID = process.env.EXCHANGE_PROFILE_ID; //Exchange Profile ID
 const paymentMethod = process.env.PAYMENT_ID; //This is the ID associated w/ your business banking account
@@ -19,10 +19,10 @@ const data = JSON.stringify({
   currency: 'USD',
 });
 
-const message = CB_ACCESS_TIMESTAMP + method + requestPath + data;
+const message = timestamp + method + requestPath + data;
 const key = Buffer.from(secret, 'base64');
 const hmac = crypto.createHmac('sha256', key);
-const CB_ACCESS_SIGN = hmac.update(message).digest('base64');
+const signature = hmac.update(message).digest('base64');
 
 async function withdrawToBankAccount() {
   try {
@@ -31,10 +31,10 @@ async function withdrawToBankAccount() {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'CB-ACCESS-KEY': CB_ACCESS_KEY,
-        'CB-ACCESS-PASSPHRASE': CB_ACCESS_PASSPHRASE,
-        'CB-ACCESS-SIGN': CB_ACCESS_SIGN,
-        'CB-ACCESS-TIMESTAMP': CB_ACCESS_TIMESTAMP,
+        'CB-ACCESS-KEY': accessKey,
+        'CB-ACCESS-SIGN': signature,
+        'CB-ACCESS-TIMESTAMP': timestamp,
+        'CB-ACCESS-PASSPHRASE': passphrase,
       },
       body: data,
     });

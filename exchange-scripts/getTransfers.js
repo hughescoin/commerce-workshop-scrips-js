@@ -1,7 +1,7 @@
 const crypto = require('crypto');
-const cb_access_timestamp = Date.now() / 1000;
-const cb_access_passphrase = process.env.CB_ACCESS_PASSPHRASE;
-const cb_access_key = process.env.CB_ACCESS_KEY;
+const timestamp = Date.now() / 1000; // in ms
+const passphrase = process.env.CB_ACCESS_PASSPHRASE;
+const accessKey = process.env.CB_ACCESS_KEY;
 const secret = process.env.CB_SECRET;
 const baseURL = process.env.BASE_URL;
 
@@ -9,10 +9,10 @@ const requestPath = '/transfers/';
 const method = 'GET';
 const url = baseURL + requestPath;
 
-const message = cb_access_timestamp + method + requestPath;
+const message = timestamp + method + requestPath;
 const key = Buffer.from(secret, 'base64');
 const hmac = crypto.createHmac('sha256', key);
-const cb_access_sign = hmac.update(message).digest('base64');
+const signature = hmac.update(message).digest('base64');
 
 async function getProfileTransfers() {
   try {
@@ -21,10 +21,10 @@ async function getProfileTransfers() {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'CB-ACCESS-KEY': cb_access_key,
-        'CB-ACCESS-SIGN': cb_access_sign,
-        'CB-ACCESS-TIMESTAMP': cb_access_timestamp,
-        'CB-ACCESS-PASSPHRASE': cb_access_passphrase,
+        'CB-ACCESS-KEY': accessKey,
+        'CB-ACCESS-SIGN': signature,
+        'CB-ACCESS-TIMESTAMP': timestamp,
+        'CB-ACCESS-PASSPHRASE': passphrase,
       },
     });
     const data = await response.json();
