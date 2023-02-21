@@ -7,7 +7,7 @@ const profileID = process.env.EXCHANGE_PROFILE_ID; //Exchange Profile ID
 const paymentMethod = process.env.PAYMENT_ID; //This is the ID associated w/ your business banking account
 const baseURL = process.env.BASE_URL;
 
-const requestPath = `/withdrawals/payment-method/`;
+const requestPath = '/withdrawals/payment-method/';
 const transferAmount = '3.5'; //Amount to be transfered to your bank account
 const method = 'POST';
 

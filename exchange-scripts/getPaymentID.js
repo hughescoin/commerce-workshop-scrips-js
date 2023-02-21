@@ -5,7 +5,7 @@ const accessKey = process.env.CB_ACCESS_KEY;
 const secret = process.env.CB_SECRET;
 const baseURL = process.env.BASE_URL;
 
-const requestPath = `/payment-methods/`;
+const requestPath = '/payment-methods/';
 const method = 'GET';
 const url = baseURL + requestPath;
 

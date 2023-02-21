@@ -1,6 +1,6 @@
 const chargeCode = process.env.CHARGE_CODE;
 const baseURL = process.env.BASE_URL;
-const url = baseURL + `/charges/${chargeCode}/cancel/`;
+const url = `${baseURL}/charges/${chargeCode}/cancel/`;
 
 async function cancelCharge() {
   try {

@@ -1,6 +1,6 @@
 const chargeCode = process.env.CHARGE_CODE;
 const baseURL = process.env.BASE_URL;
-const url = baseURL + `/charges/${chargeCode}/resolve/`;
+const url = `${baseURL}/charges/${chargeCode}/resolve/`;
 
 async function resolveCharge() {
   try {

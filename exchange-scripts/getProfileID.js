@@ -5,7 +5,7 @@ const accessKey = process.env.CB_ACCESS_KEY;
 const secret = process.env.CB_SECRET;
 const baseURL = process.env.BASE_URL;
 
-const requestPath = `/profiles/`;
+const requestPath = '/profiles/';
 const method = 'GET';
 const url = baseURL + requestPath;
 

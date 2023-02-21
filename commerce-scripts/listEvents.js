@@ -1,5 +1,5 @@
 const baseURL = process.env.BASE_URL;
-const url = baseURL + `/events/`;
+const url = `${baseURL}/events/`;
 
 async function listEvents() {
   try {

@@ -1,5 +1,5 @@
 const baseURL = process.env.BASE_URL;
-const url = baseURL + `/charges/`;
+const url = `${baseURL}/charges/`;
 
 async function viewCharges() {
   try {

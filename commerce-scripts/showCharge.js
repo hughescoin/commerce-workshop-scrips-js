@@ -1,6 +1,6 @@
 const baseURL = process.env.BASE_URL;
 const chargeCode = process.env.CHARGE_CODE;
-const url = baseURL + `/charges/${chargeCode}`;
+const url = `${baseURL}/charges/${chargeCode}`;
 
 async function showCharge() {
   try {
