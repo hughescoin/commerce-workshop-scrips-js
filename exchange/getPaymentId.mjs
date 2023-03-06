@@ -45,7 +45,7 @@ async function getPaymentID() {
       },
     });
     const data = await response.json(); //if empty array return add payment method
-    const paymentID = data; //[0].id;
+    const paymentID = data[0].id;
     console.log(paymentID);
   } catch (error) {
     console.log(error);

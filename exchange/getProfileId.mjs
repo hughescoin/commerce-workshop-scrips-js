@@ -45,7 +45,7 @@ async function getProfileID() {
       },
     });
     const data = await response.json();
-    const profileID = data; //[0].id;
+    const profileID = data[0].id;
     console.log(profileID);
   } catch (error) {
     console.log(error);
