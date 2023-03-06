@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-const baseURL = process.env.BASE_URL;
+const fetch = require('node-fetch');
+const baseURL = 'https://api.commerce.coinbase.com';
 const url = `${baseURL}/charges`;
 
 const chargeDetails = JSON.stringify({
@@ -40,14 +41,14 @@ async function createCharge() {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'X-CC-API-KEY': process.env.API_KEY,
-        'X-CC-Version': process.env.API_VERSION,
+        'X-CC-API-KEY': process.env.COMMERCE_API_KEY,
+        'X-CC-Version': process.env.COMMERCE_API_VERSION,
       },
       body: chargeDetails,
     });
     const data = await response.json();
     //To view the full charge object console.log(data.data)
-    console.log(data.data.code);
+    console.log(data);
   } catch (error) {
     console.log(error);
   }
