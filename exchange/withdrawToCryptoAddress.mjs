@@ -17,7 +17,7 @@
 import fetch from 'node-fetch';
 import crypto from 'crypto';
 const timestamp = Date.now() / 1000; // in ms
-const passphrase = process.env.EXCHANGE_ACCESS_PASSPHRASE;
+const passphrase = process.env.EXCHANGE_PASSPHRASE;
 const accessKey = process.env.EXCHANGE_ACCESS_KEY;
 const secret = process.env.EXCHANGE_SECRET;
 const baseURL = process.env.EXCHANGE_BASE_URL;

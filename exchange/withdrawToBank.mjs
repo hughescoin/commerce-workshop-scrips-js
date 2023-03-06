@@ -17,7 +17,7 @@
 import fetch from 'node-fetch';
 import crypto from 'crypto';
 const timestamp = Date.now() / 1000; // in ms
-const passphrase = process.env.EXCHANGE__ACCESS_PASSPHRASE;
+const passphrase = process.env.EXCHANGE_PASSPHRASE;
 const accessKey = process.env.EXCHANGE__ACCESS_KEY;
 const secret = process.env.EXCHANGE__SECRET; //Exchange API Secret
 const profileID = process.env.EXCHANGE_PROFILE_ID; //Exchange Profile ID
