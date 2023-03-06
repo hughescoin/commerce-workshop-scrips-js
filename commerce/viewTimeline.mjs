@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-const chargeCode = process.env.CHARGE_CODE;
+import fetch from 'node-fetch';
 const baseURL = process.env.BASE_URL;
-const url = `${baseURL}/charges/${chargeCode}/resolve/`;
+const chargeCode = process.env.CHARGE_CODE;
+const url = `${baseURL}/charges/${chargeCode}`;
 
-async function resolveCharge() {
+async function viewTimeline() {
   try {
     const response = await fetch(url, {
-      method: 'POST',
+      method: 'GET',
       url: url,
       mode: 'cors',
       headers: {
@@ -32,10 +33,10 @@ async function resolveCharge() {
       },
     });
     const data = await response.json();
-    console.log(data);
+    return console.log(data.data.timeline);
   } catch (error) {
     console.log(error);
   }
 }
 
-resolveCharge();
+viewTimeline();

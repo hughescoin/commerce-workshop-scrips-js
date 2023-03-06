@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
+import fetch from 'node-fetch';
 const baseURL = process.env.BASE_URL;
 const chargeCode = process.env.CHARGE_CODE;
 const url = `${baseURL}/charges/${chargeCode}`;
 
-async function viewTimeline() {
+async function showCharge() {
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -32,10 +33,10 @@ async function viewTimeline() {
       },
     });
     const data = await response.json();
-    return console.log(data.data.timeline);
+    console.log(data.data);
   } catch (error) {
     console.log(error);
   }
 }
 
-viewTimeline();
+showCharge();

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import fetch from 'node-fetch';
 const baseURL = process.env.BASE_URL;
-const url = `${baseURL}/charges/`;
+const url = `${baseURL}/events/`;
 
-async function viewCharges() {
+async function listEvents() {
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -37,4 +38,4 @@ async function viewCharges() {
   }
 }
 
-viewCharges();
+listEvents();

@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+import fetch from 'node-fetch';
+const chargeCode = process.env.CHARGE_CODE;
 const baseURL = process.env.BASE_URL;
-const url = `${baseURL}/events/`;
+const url = `${baseURL}/charges/${chargeCode}/cancel/`;
 
-async function listEvents() {
+async function cancelCharge() {
   try {
     const response = await fetch(url, {
-      method: 'GET',
+      method: 'POST',
       url: url,
       mode: 'cors',
       headers: {
@@ -31,10 +33,10 @@ async function listEvents() {
       },
     });
     const data = await response.json();
-    console.log(data.data);
+    console.log(data);
   } catch (error) {
     console.log(error);
   }
 }
 
-listEvents();
+cancelCharge();

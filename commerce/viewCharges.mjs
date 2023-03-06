@@ -14,44 +14,28 @@
  * limitations under the License.
  */
 
-const fetch = require('node-fetch');
-const baseURL = 'https://api.commerce.coinbase.com';
-const url = `${baseURL}/charges`;
+import fetch from 'node-fetch';
+const baseURL = process.env.BASE_URL;
+const url = `${baseURL}/charges/`;
 
-const chargeDetails = JSON.stringify({
-  name: 'New charge',
-  description: 'Test Charge',
-  pricing_type: 'fixed_price', //Use "no_price" for donation checkouts and recurring deposits
-  local_price: {
-    amount: 2,
-    currency: 'USD',
-  },
-  metadata: {
-    customer_id: 7979,
-    customer_name: 'Bobby Brown',
-  },
-});
-
-async function createCharge() {
+async function viewCharges() {
   try {
     const response = await fetch(url, {
-      method: 'POST',
+      method: 'GET',
       url: url,
       mode: 'cors',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'X-CC-API-KEY': process.env.COMMERCE_API_KEY,
-        'X-CC-Version': process.env.COMMERCE_API_VERSION,
+        'X-CC-API-KEY': process.env.API_KEY,
+        'X-CC-Version': process.env.API_VERSION,
       },
-      body: chargeDetails,
     });
     const data = await response.json();
-    //To view the full charge object console.log(data.data)
-    console.log(data);
+    console.log(data.data);
   } catch (error) {
     console.log(error);
   }
 }
 
-createCharge();
+viewCharges();
