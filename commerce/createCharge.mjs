@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 - 2023 Coinbase Global, Inc.
+ * Copyright 2023-present Coinbase Global, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 import fetch from 'node-fetch';
-const baseURL = 'https://api.commerce.coinbase.com';
+const baseURL = process.env.COMMERCE_BASE_URL;
 const url = `${baseURL}/charges`;
 
 const chargeDetails = JSON.stringify({
@@ -48,7 +48,7 @@ async function createCharge() {
     });
     const data = await response.json();
     //To view the full charge object console.log(data.data)
-    console.log(data);
+    console.log(data.data.code);
   } catch (error) {
     console.log(error);
   }

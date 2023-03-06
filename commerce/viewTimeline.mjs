@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 - 2023 Coinbase Global, Inc.
+ * Copyright 2023-present Coinbase Global, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 import fetch from 'node-fetch';
-const baseURL = process.env.BASE_URL;
+const baseURL = process.env.COMMERCE_BASE_URL;
 const chargeCode = process.env.CHARGE_CODE;
 const url = `${baseURL}/charges/${chargeCode}`;
 
@@ -28,8 +28,8 @@ async function viewTimeline() {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'X-CC-API-KEY': process.env.API_KEY,
-        'X-CC-Version': process.env.API_VERSION,
+        'X-CC-API-KEY': process.env.COMMERCE_API_KEY,
+        'X-CC-Version': process.env.COMMERCE_API_VERSION,
       },
     });
     const data = await response.json();
