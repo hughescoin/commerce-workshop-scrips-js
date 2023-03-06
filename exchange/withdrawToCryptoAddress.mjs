@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 - 2023 Coinbase Global, Inc.
+ * Copyright 2023-present Coinbase Global, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,36 @@
  * limitations under the License.
  */
 
-const crypto = require('crypto');
+import fetch from 'node-fetch';
+import crypto from 'crypto';
 const timestamp = Date.now() / 1000; // in ms
-const passphrase = process.env.CB_ACCESS_PASSPHRASE;
-const accessKey = process.env.CB_ACCESS_KEY;
-const secret = process.env.CB_SECRET;
-const baseURL = process.env.BASE_URL;
+const passphrase = process.env.EXCHANGE_ACCESS_PASSPHRASE;
+const accessKey = process.env.EXCHANGE_ACCESS_KEY;
+const secret = process.env.EXCHANGE_SECRET;
+const baseURL = process.env.EXCHANGE_BASE_URL;
+const profileID = process.env.EXCHANGE_PROFILE_ID;
 
-const requestPath = '/payment-methods/';
-const method = 'GET';
+const requestPath = '/withdrawals/crypto/';
+const method = 'POST';
 const url = baseURL + requestPath;
 
-const message = timestamp + method + requestPath; // + data;
+const userCurrency = 'USDC';
+const userWithdrawlAddress = '0xb6d00d83158fee6695c72ff9c5e915478a479224';
+const userWithdrawalAmount = 5;
+
+const data = JSON.stringify({
+  profile_id: profileID,
+  amount: userWithdrawalAmount, //units of currency to be withdrawn ex: "3",
+  crypto_address: userWithdrawlAddress, //example: "",
+  currency: userCurrency, // exampple: "USDC",
+});
+
+const message = timestamp + method + requestPath + data;
 const key = Buffer.from(secret, 'base64');
 const hmac = crypto.createHmac('sha256', key);
 const signature = hmac.update(message).digest('base64');
 
-async function getPaymentID() {
+async function withdrawToCryptoAddress() {
   try {
     const response = await fetch(url, {
       method: method,
@@ -42,13 +55,13 @@ async function getPaymentID() {
         'CB-ACCESS-TIMESTAMP': timestamp,
         'CB-ACCESS-PASSPHRASE': passphrase,
       },
+      body: data,
     });
-    const data = await response.json();
-    const paymentID = data[0].id;
-    console.log(paymentID);
+    const conf = await response.json();
+    console.log(conf);
   } catch (error) {
     console.log(error);
   }
 }
 
-getPaymentID();
+withdrawToCryptoAddress();

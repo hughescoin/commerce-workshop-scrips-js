@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 - 2023 Coinbase Global, Inc.
+ * Copyright 2023-present Coinbase Global, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-const crypto = require('crypto');
+import fetch from 'node-fetch';
+import crypto from 'crypto';
 const timestamp = Date.now() / 1000; // in ms
-const passphrase = process.env.CB_ACCESS_PASSPHRASE;
-const accessKey = process.env.CB_ACCESS_KEY;
-const secret = process.env.CB_SECRET;
-const baseURL = process.env.BASE_URL;
+const passphrase = process.env.EXCHANGE_ACCESS_PASSPHRASE;
+const accessKey = process.env.EXCHANGE_ACCESS_KEY;
+const secret = process.env.EXCHANGE_SECRET;
+const baseURL = process.env.EXCHANGE_BASE_URL;
 
 const requestPath = '/transfers/';
 const method = 'GET';

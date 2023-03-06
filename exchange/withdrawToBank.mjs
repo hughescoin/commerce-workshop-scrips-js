@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 - 2023 Coinbase Global, Inc.
+ * Copyright 2023-present Coinbase Global, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-const crypto = require('crypto');
+import fetch from 'node-fetch';
+import crypto from 'crypto';
 const timestamp = Date.now() / 1000; // in ms
-const passphrase = process.env.CB_ACCESS_PASSPHRASE;
-const accessKey = process.env.CB_ACCESS_KEY;
-const secret = process.env.CB_SECRET;
-const profileID = process.env.EXCHANGE_PROFILE_ID;
-const baseURL = process.env.BASE_URL;
+const passphrase = process.env.EXCHANGE__ACCESS_PASSPHRASE;
+const accessKey = process.env.EXCHANGE__ACCESS_KEY;
+const secret = process.env.EXCHANGE__SECRET; //Exchange API Secret
+const profileID = process.env.EXCHANGE_PROFILE_ID; //Exchange Profile ID
+const paymentMethod = process.env.PAYMENT_ID; //This is the ID associated w/ your business banking account
+const baseURL = process.env.EXCHANGE_BASE_URL;
 
-const requestPath = '/withdrawals/crypto/';
+const requestPath = '/withdrawals/payment-method/';
+const transferAmount = '3.5'; //Amount to be transfered to your bank account
 const method = 'POST';
+
 const url = baseURL + requestPath;
-
-const userCurrency = 'USDC';
-const userWithdrawlAddress = '0xb6d00d83158fee6695c72ff9c5e915478a479224';
-const userWithdrawalAmount = 5;
-
 const data = JSON.stringify({
   profile_id: profileID,
-  amount: userWithdrawalAmount, //units of currency to be withdrawn ex: "3",
-  crypto_address: userWithdrawlAddress, //example: "",
-  currency: userCurrency, // exampple: "USDC",
+  amount: transferAmount,
+  payment_method_id: paymentMethod,
+  currency: 'USD',
 });
 
 const message = timestamp + method + requestPath + data;
@@ -42,7 +41,7 @@ const key = Buffer.from(secret, 'base64');
 const hmac = crypto.createHmac('sha256', key);
 const signature = hmac.update(message).digest('base64');
 
-async function withdrawToCryptoAddress() {
+async function withdrawToBankAccount() {
   try {
     const response = await fetch(url, {
       method: method,
@@ -56,11 +55,10 @@ async function withdrawToCryptoAddress() {
       },
       body: data,
     });
-    const conf = await response.json();
-    console.log(conf);
+    const res = await response.json();
+    console.log(res);
   } catch (error) {
     console.log(error);
   }
 }
-
-withdrawToCryptoAddress();
+withdrawToBankAccount();

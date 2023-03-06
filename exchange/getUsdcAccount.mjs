@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 - 2023 Coinbase Global, Inc.
+ * Copyright 2023-present Coinbase Global, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,34 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-const crypto = require('crypto');
+import fetch from 'node-fetch';
+import crypto from 'crypto';
 const timestamp = Date.now() / 1000; // in ms
-const passphrase = process.env.CB_ACCESS_PASSPHRASE;
-const accessKey = process.env.CB_ACCESS_KEY;
-const secret = process.env.CB_SECRET; //Exchange API Secret
-const profileID = process.env.EXCHANGE_PROFILE_ID; //Exchange Profile ID
-const paymentMethod = process.env.PAYMENT_ID; //This is the ID associated w/ your business banking account
-const baseURL = process.env.BASE_URL;
+const passphrase = process.env.EXCHANGE_ACCESS_PASSPHRASE;
+const accessKey = process.env.EXCHANGE_ACCESS_KEY;
+const secret = process.env.EXCHANGE_SECRET;
+const baseURL = process.env.EXCHANGE_BASE_URL;
 
-const requestPath = '/withdrawals/payment-method/';
-const transferAmount = '3.5'; //Amount to be transfered to your bank account
-const method = 'POST';
-
+const requestPath = '/accounts';
+const method = 'GET';
 const url = baseURL + requestPath;
-const data = JSON.stringify({
-  profile_id: profileID,
-  amount: transferAmount,
-  payment_method_id: paymentMethod,
-  currency: 'USD',
-});
-
-const message = timestamp + method + requestPath + data;
+const message = timestamp + method + requestPath;
 const key = Buffer.from(secret, 'base64');
 const hmac = crypto.createHmac('sha256', key);
 const signature = hmac.update(message).digest('base64');
 
-async function withdrawToBankAccount() {
+function findAccountIDByName(str, arr) {
+  let currency = str.toUpperCase();
+  arr.forEach((account) => {
+    if (account.currency == currency) {
+      console.log(account.id);
+    }
+  });
+}
+
+async function getUsdcAccount() {
   try {
     const response = await fetch(url, {
       method: method,
@@ -52,12 +50,12 @@ async function withdrawToBankAccount() {
         'CB-ACCESS-TIMESTAMP': timestamp,
         'CB-ACCESS-PASSPHRASE': passphrase,
       },
-      body: data,
     });
-    const res = await response.json();
-    console.log(res);
+    const data = await response.json();
+    let accounts = new Array(...data);
+    findAccountIDByName('usdc', accounts);
   } catch (error) {
     console.log(error);
   }
 }
-withdrawToBankAccount();
+getUsdcAccount();
